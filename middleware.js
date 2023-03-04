@@ -80,12 +80,12 @@ export async function middleware(req) {
      */
 
      if (pathname.includes('/api/auth') || token) {
-          return NextResponse.next;
+          return NextResponse.next();
      }
 
         //Redirect user to login if they don't have a token and are accessing a protected route
      if (!token && pathname !== '/login'){
-          return NextResponse.redirect('/login');
+          return NextResponse.redirect(new URL('/login', req.url))
      }
 
 }
