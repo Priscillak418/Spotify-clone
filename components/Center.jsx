@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSession } from 'next-auth/react'
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
-import {useState, useEffect} from 'react/'
+import {useState, useEffect} from 'react'
 import { shuffle } from 'lodash';
 
 
@@ -19,7 +19,7 @@ export default function Center() {
     const [color, setColor] = useState(null);
     
     useEffect (() => {
-        setColor(shuffle(color).pop())
+        setColor(shuffle(colors).pop())
     },[])
 
   return (
@@ -35,9 +35,9 @@ export default function Center() {
         </header>
 
         <section
-            className={`flex items-end space-x-7 bg-gradient-to-b to-black ${colors} h-80 padding-8`}
+            className={`flex items-end space-x-7 bg-gradient-to-b to-black ${color} h-80 padding-8`}
         >
-
+            <h1> hello</h1>
         </section>
     </div>
   )
