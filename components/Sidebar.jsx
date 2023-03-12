@@ -1,12 +1,27 @@
 import React from 'react'
+import {useState, useEffect} from 'react'
 import {HomeIcon, MagnifyingGlassIcon, BuildingLibraryIcon, PlusCircleIcon, HeartIcon, RssIcon} from '@heroicons/react/24/outline'
 import { signOut,useSession } from 'next-auth/react'
-
+import useSpotify from '@/hooks/useSpotify';
+// import authOptions from '@/pages/api/auth/[...nextauth]';
 
 function Sidebar() {
-    const { data: session, status } = useSession()
+    const spotifyApi = useSpotify();
+    
+    
+        const { data: session, status } = useSession()
+        const [playlists, setPlaylists] = useState([]);
+        
+        useEffect (() => {
+            if (spotifyApi.getAccessToken()){
+                spotifyApi.getUserPlaylists().then((data) => {
+                    setPlaylists(data.body.items);
+                })
+            }
+        },[session, spotifyApi]);
 
-    console.log(session);
+        console.log(playlists);
+    //console.log(session);
   return (
     <div className='text-gray-500 p-5 text-sm border-r border-gray-900 overflow-y-scroll h-screen'>
         <div className ='space-y-4'>
@@ -45,16 +60,9 @@ function Sidebar() {
         </div>
         <hr className='border-t-[0.1px] border-gray-900'/>
         {/* playlists */}
-        <p className='cursor-pointer hover:text-white'>playlist</p>
-        <p className='cursor-pointer hover:text-white'>playlist</p>
-        <p className='cursor-pointer hover:text-white'>playlist</p>
-        <p className='cursor-pointer hover:text-white'>playlist</p>
-        <p className='cursor-pointer hover:text-white'>playlist</p>
-        <p className='cursor-pointer hover:text-white'>playlist</p>
-        <p className='cursor-pointer hover:text-white'>playlist</p>
-        <p className='cursor-pointer hover:text-white'>playlist</p>
-        <p className='cursor-pointer hover:text-white'>playlist</p>
-        <p className='cursor-pointer hover:text-white'>playlist</p>
+        {playlists.map((playlist) => (
+            <p key= {playlist.id} className='cursor-pointer hover:text-white'>{playlist.name}</p>
+        ))}
     </div>
   )
 }
