@@ -5,10 +5,11 @@ import SpotifyProvider from "next-auth/providers/spotify"
 
 async function refreshAccessToken (){
   try{
-    spotifyApi.setAccessToken(access.setAccessToken)
-    spotifyApi.setRefreshToken(access.setRefreshToken)
+    console.log('Refreshing access token...')
+    spotifyApi.setAccessToken(token.accessToken)
+    spotifyApi.setRefreshToken(token.refreshToken)
 
-    const {body: refreshedToken} = await spotifyApi.refreshAccessToken(token)
+    const {body: refreshedToken} = await spotifyApi.refreshAccessToken(token.refreshToken)
     console.log('The refreshed token is', refreshedToken);
 
     return {
@@ -43,6 +44,10 @@ export const authOptions = {
   },
   callbacks: {
     async jwt({ token, user, account }) {
+      console.log('JWT callback - token:', token)
+      console.log('JWT callback - user:', user)
+      console.log('JWT callback - account:', account)
+
       // Initial sign in
       if (account && user) {
         return {
@@ -62,8 +67,12 @@ export const authOptions = {
       return refreshAccessToken(token)
     },
     async session({ session, token }) {
-      session.user.accessToken = token.user.accessToken
-      session.user.refreshToken = token.user.refreshToken
+
+      console.log('Session callback - session:', session)
+      console.log('Session callback - token:', token)
+
+      session.accessToken = token.accessToken
+      session.refreshToken = token.refreshToken
       session.user.email = token.user.email
       session.user.image = token.user.image
       session.user.name = token.user.name

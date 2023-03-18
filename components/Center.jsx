@@ -37,7 +37,6 @@ export default function Center() {
         <section
             className={`flex items-end space-x-7 bg-gradient-to-b to-black ${color} h-80 padding-8`}
         >
-            <h1> hello</h1>
         </section>
     </div>
   )
